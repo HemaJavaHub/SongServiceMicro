@@ -3,14 +3,20 @@ package com.songservice.songservice.controller;
 import com.songservice.songservice.models.Song;
 import com.songservice.songservice.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class SongController {
 
+    @Autowired
+    Environment env;
+
     SongService songService;
+
 
     @Autowired
     public SongController(SongService songService){
@@ -22,6 +28,14 @@ public class SongController {
     public Song addSong(@RequestBody Song song){
        return  songService.saveSong(song);
 
+    }
+
+
+    @GetMapping("/song/{id}")
+    public Optional<Song> getSong(@PathVariable String id) {
+        System.out.println("Local host Values....."+env.getProperty("local.server.port"));
+
+        return songService.getSongById(id);
     }
 
 //
